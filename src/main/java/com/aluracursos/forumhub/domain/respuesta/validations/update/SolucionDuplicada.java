@@ -1,6 +1,5 @@
 package com.aluracursos.forumhub.domain.respuesta.validations.update;
 
-import com.aluracursos.forumhub.domain.curso.dto.ActualizarCursoDTO;
 import com.aluracursos.forumhub.domain.respuesta.Respuesta;
 import com.aluracursos.forumhub.domain.respuesta.RespuestaRepository;
 import com.aluracursos.forumhub.domain.respuesta.dto.ActualizarRespuestaDTO;
@@ -24,7 +23,7 @@ public class SolucionDuplicada implements ValidarRespuestaActualizada{
         if(datos.esLaSolucion()){
             Respuesta respuesta = respuestaRepository.getReferenceById(respuestaId);
             var topicoResuelto = topicoRepository.getReferenceById(respuesta.getTopico().getId());
-            if(topicoResuelto.getStatus() == TopicoStatus.RESPONDIDO){
+            if(topicoResuelto.getStatus() == TopicoStatus.RESUELTO){
                 throw new ValidationException("Este topico ya esta solucionado");
             }
         }

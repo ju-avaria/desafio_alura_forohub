@@ -21,7 +21,9 @@ public class Respuesta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String mensaje;
+
     @Column(name = "fecha_creacion")
     private LocalDateTime fechaCreacion;
     @Column(name = "ultima_actualizacion")
@@ -39,6 +41,7 @@ public class Respuesta {
     private Topico topico;
 
     public Respuesta(CrearRespuestaDTO crearRespuestaDTO, Usuario usuario, Topico topico){
+
         this.mensaje = crearRespuestaDTO.mensaje();
         this.fechaCreacion = LocalDateTime.now();
         this.ultimaActualizacion = LocalDateTime.now();

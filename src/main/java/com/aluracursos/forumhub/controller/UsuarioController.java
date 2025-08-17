@@ -1,6 +1,5 @@
 package com.aluracursos.forumhub.controller;
 
-import com.aluracursos.forumhub.domain.curso.Curso;
 import com.aluracursos.forumhub.domain.usuario.Usuario;
 import com.aluracursos.forumhub.domain.usuario.UsuarioRepository;
 import com.aluracursos.forumhub.domain.usuario.dto.ActualizarUsuarioDTO;
@@ -27,7 +26,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/usuarios")
 @SecurityRequirement(name = "bearer-key")
-@Tag(name = "Usuario", description = "Crear topicos y publica respuestas")
+@Tag(name = "Usuario", description = "Crear topicos y publicar respuestas")
 public class UsuarioController {
 
     @Autowired
@@ -45,7 +44,8 @@ public class UsuarioController {
     @PostMapping
     @Transactional
     @Operation(summary = "Registra un nuevo usuario en la base de datos")
-    public ResponseEntity<DetalleUsuarioDTO> crearUsuario(@RequestBody @Valid CrearUsuarioDTO crearUsuarioDTO, UriComponentsBuilder uriComponentsBuilder){
+    public ResponseEntity<DetalleUsuarioDTO> crearUsuario(@RequestBody @Valid CrearUsuarioDTO crearUsuarioDTO,
+                                                          UriComponentsBuilder uriComponentsBuilder){
         crearValidadores.forEach(v -> v.validar(crearUsuarioDTO));
 
         String contrasenaEncriptada = passwordEncoder.encode(crearUsuarioDTO.contrasena());
@@ -57,11 +57,13 @@ public class UsuarioController {
     }
 
     @GetMapping("/all")
-    @Operation(summary = "Enumera todos los usuarios independientemente de su estado")
-    public ResponseEntity<Page<DetalleUsuarioDTO>> leerTodosLosUsuarios(@PageableDefault(size = 5, sort = "/{ultimaActualizacion") Pageable pageable){
+    @Operation(summary = "Enumera todos los usuarios")
+    public ResponseEntity<Page<DetalleUsuarioDTO>> leerTodosLosUsuarios(@PageableDefault(size = 5, sort = "/{ultimaActualizacion")
+                                                                            Pageable pageable){
         var pagina = usuarioRepository.findAll(pageable).map(DetalleUsuarioDTO::new);
         return ResponseEntity.ok(pagina);
     }
+
     @GetMapping
     @Operation(summary = "Lista solo los usuario habilitados")
     public ResponseEntity<Page<DetalleUsuarioDTO>> leerUsuariosActivos(@PageableDefault(size = 5, sort = "/{ultimaActualizacion") Pageable pageable){
@@ -72,7 +74,9 @@ public class UsuarioController {
     @GetMapping("/username/{nombreUsuario}")
     @Operation(summary = "Lee un único usuario por su nombre de usuario")
     public ResponseEntity<DetalleUsuarioDTO> leerUnUsuario(@PathVariable String nombreUsuario){
+
         Usuario usuario = (Usuario) usuarioRepository.findByNombreUsuario(nombreUsuario);
+
         var datosUsuario = new DetalleUsuarioDTO(
                 usuario.getId(),
                 usuario.getNombreUsuario(),
@@ -103,8 +107,9 @@ public class UsuarioController {
 
     @PutMapping("/{nombreUsusario}")
     @Transactional
-    @Operation(summary = "Actuañiza la contraseña de un usuario, rol, nombre y apellido, email o estado")
-    public ResponseEntity<DetalleUsuarioDTO> actualizarUsuario(@RequestBody @Valid ActualizarUsuarioDTO actualizarUsuarioDTO, String nombreUsuario){
+    @Operation(summary = "Actualiza la contraseña de un usuario, rol, nombre , apellido, email o estado")
+    public ResponseEntity<DetalleUsuarioDTO> actualizarUsuario(@RequestBody @Valid ActualizarUsuarioDTO actualizarUsuarioDTO,
+                                                               String nombreUsuario){
         actualizarValidadores.forEach(v -> v.validar(actualizarUsuarioDTO));
 
         Usuario usuario = (Usuario) usuarioRepository.findByNombreUsuario(nombreUsuario);

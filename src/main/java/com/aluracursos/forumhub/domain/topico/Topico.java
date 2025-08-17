@@ -25,6 +25,7 @@ public class Topico {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String titulo;
     private String mensaje;
 
@@ -44,10 +45,9 @@ public class Topico {
     @JoinColumn(name = "curso_id")
     private Curso curso;
 
-//    @OneToMany(mappedBy = "topico")
-//    private List<Respuesta> respuestas = new ArrayList<>();
 
     public Topico(CrearTopicoDTO datos, Usuario usuario, Curso curso) {
+
         this.titulo = datos.titulo();
         this.mensaje = datos.mensaje();
         this.fechaCreacion = LocalDateTime.now();
@@ -55,15 +55,14 @@ public class Topico {
         this.status = datos.status();
         this.usuario = usuario;
         this.curso = curso;
-//        this.respuestas = datos.respuestas();
     }
-
 
 
     public void actualizarTopicoConCurso(ActualizarTopicoDTO actualizarTopicoDTO, Curso curso) {
         if(actualizarTopicoDTO.titulo() != null){
             this.titulo =actualizarTopicoDTO.titulo();
         }
+
         if(actualizarTopicoDTO.mensaje() != null){
             this.mensaje = actualizarTopicoDTO.mensaje();
         }
@@ -77,7 +76,9 @@ public class Topico {
         }
     }
 
+
     public void actualizarTopico(ActualizarTopicoDTO actualizarTopicoDTO){
+
         if (actualizarTopicoDTO.titulo() != null){
             this.titulo = actualizarTopicoDTO.titulo();
         }
@@ -93,13 +94,7 @@ public class Topico {
         this.ultimaActualizacion = LocalDateTime.now();
     }
 
-
-
     public void eliminarTopico() {
         this.status = TopicoStatus.ELIMINADO;
-    }
-
-    public void setStatus(TopicoStatus status) {
-        this.status = status;
     }
 }

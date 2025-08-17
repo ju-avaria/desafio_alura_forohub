@@ -10,11 +10,9 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -30,7 +28,7 @@ public class CursoController {
 
     @PostMapping
     @Transactional
-    // @Operation(sumary = "Registrar un nuevo Curso en al BD";
+    @Operation(summary = "Registrar un nuevo Curso en la BD")
     public ResponseEntity<DetalleCursoDTO> crearTopico(@RequestBody CrearCursoDTO crearCursoDTO,
                                                        UriComponentsBuilder uriComponentsBuilder){
 
@@ -42,7 +40,7 @@ public class CursoController {
     }
 
     @GetMapping("/all")
-    @Operation(summary = "Lee todos los cursos independiente d ela categoria")
+    @Operation(summary = "Lee todos los cursos")
     public ResponseEntity<Page<DetalleCursoDTO>> listarCursos(Pageable pageable){
         var pagina = cursoRepository.findAll(pageable).map(DetalleCursoDTO::new);
         return ResponseEntity.ok(pagina);
@@ -56,7 +54,7 @@ public class CursoController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Lee un solo curso por ID")
+    @Operation(summary = "Lee solamente un curso por ID")
     public ResponseEntity<DetalleCursoDTO> listarUnCurso(@PathVariable Long id){
         Curso curso = cursoRepository.getReferenceById(id);
         var datosDelCurso = new DetalleCursoDTO(
@@ -70,11 +68,11 @@ public class CursoController {
 
     @PutMapping("/{id}")
     @Transactional
-    @Operation(summary = "Actualiza el nombre , la categoria y el status")
-    public ResponseEntity<DetalleCursoDTO> actualizarCurso(@RequestBody @Valid ActualizarCursoDTO actualizarCursoDTO, @PathVariable Long id){
+    @Operation(summary = "Actualiza el nombre , la categoria o el status")
+    public ResponseEntity<DetalleCursoDTO> actualizarCurso(@RequestBody @Valid ActualizarCursoDTO actualizarCursoDTO,
+                                                           @PathVariable Long id){
 
         Curso curso = cursoRepository.getReferenceById(id);
-
         curso.actualizarCurso(actualizarCursoDTO);
 
         var datosDelCurso = new DetalleCursoDTO(

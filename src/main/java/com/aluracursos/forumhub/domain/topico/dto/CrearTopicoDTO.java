@@ -10,7 +10,6 @@ public record CrearTopicoDTO(
         @NotNull TopicoStatus status,
         @NotBlank Long usuarioId,
         @NotBlank Long cursoId
-//      ,  List<Respuesta> respuestas
 ) {
 }
 

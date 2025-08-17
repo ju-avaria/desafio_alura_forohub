@@ -11,7 +11,6 @@ public record CrearUsuarioDTO(
         @NotBlank String nombre,
         @NotBlank String apellido,
         @NotBlank @Email String email
-//        , @NotNull Perfil perfil
 ) {
 }
 

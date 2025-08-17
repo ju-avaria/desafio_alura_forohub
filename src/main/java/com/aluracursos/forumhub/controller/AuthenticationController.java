@@ -36,5 +36,4 @@ public class AuthenticationController {
 
         return ResponseEntity.ok(new JWTtokenDTO(JWTtoken));
     }
-
 }

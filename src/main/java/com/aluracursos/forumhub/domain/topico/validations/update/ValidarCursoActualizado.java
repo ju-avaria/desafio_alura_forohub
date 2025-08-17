@@ -24,8 +24,6 @@ public class ValidarCursoActualizado implements ValidarTopicoActualizado {
             if(!cursoHabilitado){
                 throw new ValidationException("Este curso no esta habilitado");
             }
-
         }
     }
-
 }

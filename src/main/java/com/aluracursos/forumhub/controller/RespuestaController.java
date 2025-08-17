@@ -31,7 +31,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/respuestas")
 @SecurityRequirement(name = "bearer-key")
-@Tag(name = "Respuesta" , description = "Solo una puede se la solución al problema.")
+@Tag(name = "Respuesta" , description = "Solo una respuesta puede ser la solución al tema.")
 public class RespuestaController {
 
     @Autowired
@@ -51,7 +51,7 @@ public class RespuestaController {
 
     @PostMapping
     @Transactional
-    @Operation(summary = "Resgistra una nueva respuesta en la base de datos, vinculada a un usuario y un topico existente")
+    @Operation(summary = "Resgistra una nueva respuesta en la base de datos que está vinculada a un usuario y un topico existente")
     public ResponseEntity<DetalleRespuestaDTO> crearRespuesta(@RequestBody @Valid CrearRespuestaDTO crearRespuestaDTO,
                                                               UriComponentsBuilder uriComponentsBuilder){
         crearValidadores.forEach(v -> v.validar(crearRespuestaDTO));
@@ -67,7 +67,7 @@ public class RespuestaController {
     }
 
     @GetMapping("topico/{topicoId}")
-    @Operation(summary = "Lee todas las respuestas del tema dado")
+    @Operation(summary = "Lee todas las respuestas del tema del topico")
     public ResponseEntity<Page<DetalleRespuestaDTO>> leerRespuestaDelTopico(@PageableDefault(size = 5, sort = "{ultimaActualizacion}",
             direction = Sort.Direction.ASC)Pageable pageable, @PathVariable Long topicoId) {
 
@@ -79,6 +79,7 @@ public class RespuestaController {
     @Operation(summary = "Lee todas las respuestas del nombre de usuario proporcionado")
     public ResponseEntity<Page<DetalleRespuestaDTO>> leerRespuestasDelUsuario(@PageableDefault(size = 5, sort = "{ultimaactualizacion}",
             direction = Sort.Direction.ASC) Pageable pageable, @PathVariable Long usuarioId){
+
         var pagina = respuestaRepository.findAllByUsuarioId(usuarioId, pageable).map(DetalleRespuestaDTO::new);
         return ResponseEntity.ok(pagina);
     }
@@ -106,7 +107,9 @@ public class RespuestaController {
     @PutMapping("{id}")
     @Transactional
     @Operation(summary = "Actualiza el mensaje de la respuesta, la solucion o el estado de la respuesta")
-    public ResponseEntity<DetalleRespuestaDTO> actualizarRespuesta(@RequestBody @Valid ActualizarRespuestaDTO actualizarRespuestaDTO, @PathVariable Long id){
+    public ResponseEntity<DetalleRespuestaDTO> actualizarRespuesta(@RequestBody @Valid ActualizarRespuestaDTO actualizarRespuestaDTO,
+                                                                   @PathVariable Long id){
+
         actualizadarValidadores.forEach(v -> v.validar(actualizarRespuestaDTO, id));
         Respuesta respuesta = respuestaRepository.getReferenceById(id);
         respuesta.actualizarRespuesta(actualizarRespuestaDTO);

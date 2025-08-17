@@ -54,7 +54,7 @@ public class TopicosController {
     List<ValidarTopicoCreado> crearValidadores;
 
     @Autowired
-    List<ValidarTopicoActualizado> avtualizarValidadores;
+    List<ValidarTopicoActualizado> actualizarValidadores;
 
 
     @PostMapping
@@ -62,6 +62,7 @@ public class TopicosController {
     @Operation(summary = "Registra un nuevo topico en la base de datos")
     public ResponseEntity<DetalleTopicoDTO> crearTopico(@RequestBody @Valid CrearTopicoDTO crearTopicoDTO,
                                                         UriComponentsBuilder uriComponentsBuilder){
+
         crearValidadores.forEach(v -> v.validar(crearTopicoDTO));
 
         Usuario usuario = usuarioRepository.findById(crearTopicoDTO.usuarioId()).get();
@@ -76,8 +77,9 @@ public class TopicosController {
 
     @GetMapping("/all")
     @Operation(summary = "Lee todos los temas independientemente de su status")
-    public ResponseEntity<Page<DetalleTopicoDTO>> leerTopicosLosTopicos(@PageableDefault(size = 5,sort = "/{ultimaActualizacion}",
+    public ResponseEntity<Page<DetalleTopicoDTO>> leerTodosLosTopicos(@PageableDefault(size = 5,sort = "/{ultimaActualizacion}",
             direction = Sort.Direction.ASC) Pageable pageable){
+
         var pagina = topicoRepository.findAll(pageable).map(DetalleTopicoDTO::new);
         return ResponseEntity.ok(pagina);
     }
@@ -86,7 +88,8 @@ public class TopicosController {
     @GetMapping
     @Operation(summary = "Lista de temas abierto y cerrados")
     public ResponseEntity<Page<DetalleTopicoDTO>> leerTopicosNoEliminados(@PageableDefault(size = 5,sort = "/{ultimaActualizacion}",
-    direction = Sort.Direction.ASC) Pageable pageable){
+            direction = Sort.Direction.ASC) Pageable pageable){
+
         var pagina = topicoRepository.findAllByStatusIsNot(TopicoStatus.ELIMINADO, pageable).map(DetalleTopicoDTO::new);
         return ResponseEntity.ok(pagina);
     }
@@ -109,12 +112,10 @@ public class TopicosController {
         return ResponseEntity.ok(datosTopico);
     }
 
-
-
-
     @GetMapping("/{id}/solucion")
     @Operation(summary = "Lee la respuesta del topico marcada como solucion")
     public ResponseEntity<DetalleRespuestaDTO> leerSolucionTopico(@PathVariable Long id){
+
         Respuesta respuesta = respuestaRepository.getReferenceByTopicoId(id);
 
         var datosRespuesta = new DetalleRespuestaDTO(
@@ -135,8 +136,9 @@ public class TopicosController {
     @PutMapping("/{id}")
     @Transactional
     @Operation(summary = "Actualiza el titulo, el mensaje, el estado o el Id del curso de un tema")
-    public ResponseEntity<DetalleTopicoDTO> actualizarTopico(@RequestBody @Valid ActualizarTopicoDTO actualizarTopicoDTO, Long id) {
-        avtualizarValidadores.forEach(v -> v.validar(actualizarTopicoDTO));
+    public ResponseEntity<DetalleTopicoDTO> actualizarTopico(@RequestBody @Valid ActualizarTopicoDTO actualizarTopicoDTO,
+                                                             Long id) {
+        actualizarValidadores.forEach(v -> v.validar(actualizarTopicoDTO));
 
         Topico topico = topicoRepository.getReferenceById(id);
 
