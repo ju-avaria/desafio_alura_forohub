@@ -1,0 +1,10 @@
+CREATE TABLE usuarios(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    apellido VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    activo TINYINT(1) NOT NULL,
+    perfil VARCHAR(255) NOT NULL,
+    contrasena VARCHAR(255) NOT NULL,
+    nombreUsuario VARCHAR(255) NOT NULL UNIQUE
+);
