@@ -68,23 +68,23 @@ public class RespuestaController {
 
     @GetMapping("topico/{topicoId}")
     @Operation(summary = "Lee todas las respuestas del tema del topico")
-    public ResponseEntity<Page<DetalleRespuestaDTO>> leerRespuestaDelTopico(@PageableDefault(size = 5, sort = "{ultimaActualizacion}",
+    public ResponseEntity<Page<DetalleRespuestaDTO>> leerRespuestaDelTopico(@PageableDefault(size = 5,
             direction = Sort.Direction.ASC)Pageable pageable, @PathVariable Long topicoId) {
 
         var pagina = respuestaRepository.findAllByTopicoId(topicoId, pageable).map(DetalleRespuestaDTO::new);
         return ResponseEntity.ok(pagina);
     }
 
-    @GetMapping("/usuario/{nombre_usuario}")
+    @GetMapping("/usuario/{usuarioId}")
     @Operation(summary = "Lee todas las respuestas del nombre de usuario proporcionado")
-    public ResponseEntity<Page<DetalleRespuestaDTO>> leerRespuestasDelUsuario(@PageableDefault(size = 5, sort = "{ultimaactualizacion}",
+    public ResponseEntity<Page<DetalleRespuestaDTO>> leerRespuestasDelUsuario(@PageableDefault(size = 5,
             direction = Sort.Direction.ASC) Pageable pageable, @PathVariable Long usuarioId){
 
         var pagina = respuestaRepository.findAllByUsuarioId(usuarioId, pageable).map(DetalleRespuestaDTO::new);
         return ResponseEntity.ok(pagina);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/id/{id}")
     @Operation(summary = "Lee una única respuesta por su Id")
     public ResponseEntity<DetalleRespuestaDTO> leerUnaRespuesta(@PathVariable Long id){
         Respuesta respuesta = respuestaRepository.getReferenceById(id);
@@ -104,7 +104,7 @@ public class RespuestaController {
         return ResponseEntity.ok(datosRespuesta);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/id/{id}")
     @Transactional
     @Operation(summary = "Actualiza el mensaje de la respuesta, la solucion o el estado de la respuesta")
     public ResponseEntity<DetalleRespuestaDTO> actualizarRespuesta(@RequestBody @Valid ActualizarRespuestaDTO actualizarRespuestaDTO,
@@ -135,7 +135,7 @@ public class RespuestaController {
     }
 
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/id/{id}")
     @Transactional
     @Operation(summary = "Elimina una respuesta por su Id")
     public ResponseEntity<?> borrarRespuesta(@PathVariable Long id){

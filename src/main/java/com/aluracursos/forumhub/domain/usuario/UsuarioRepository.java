@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Optional;
 
@@ -16,7 +17,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 //    Usuario findByNombreUsuario(String nombreUsuario);
 
     @Query("SELECT u FROM Usuario u WHERE u.nombreUsuario = :nombreUsuario")
-    Usuario findByNombreUsuario(@Param("nombreUsuario") String nombreUsuario);
+    Usuario findByNombreUsuario(@Param("nombreUsuario")  String nombreUsuario);
 
 
     UserDetails findByEmail (String email);

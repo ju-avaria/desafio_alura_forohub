@@ -8,6 +8,7 @@ import com.aluracursos.forumhub.domain.topico.TopicoStatus;
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Component
 public class SolucionDuplicada implements ValidarRespuestaActualizada{
@@ -19,7 +20,7 @@ public class SolucionDuplicada implements ValidarRespuestaActualizada{
     private TopicoRepository topicoRepository;
 
     @Override
-    public void validar(ActualizarRespuestaDTO datos, Long respuestaId ){
+    public void validar(ActualizarRespuestaDTO datos, @PathVariable Long respuestaId ){
         if(datos.esLaSolucion()){
             Respuesta respuesta = respuestaRepository.getReferenceById(respuestaId);
             var topicoResuelto = topicoRepository.getReferenceById(respuesta.getTopico().getId());
@@ -28,6 +29,4 @@ public class SolucionDuplicada implements ValidarRespuestaActualizada{
             }
         }
     }
-
-
 }

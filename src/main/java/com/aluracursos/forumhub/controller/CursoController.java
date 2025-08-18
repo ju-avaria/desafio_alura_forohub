@@ -53,7 +53,7 @@ public class CursoController {
         return ResponseEntity.ok(pagina);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     @Operation(summary = "Lee solamente un curso por ID")
     public ResponseEntity<DetalleCursoDTO> listarUnCurso(@PathVariable Long id){
         Curso curso = cursoRepository.getReferenceById(id);
@@ -66,7 +66,7 @@ public class CursoController {
         return ResponseEntity.ok(datosDelCurso);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/id/{id}")
     @Transactional
     @Operation(summary = "Actualiza el nombre , la categoria o el status")
     public ResponseEntity<DetalleCursoDTO> actualizarCurso(@RequestBody @Valid ActualizarCursoDTO actualizarCursoDTO,
@@ -84,7 +84,7 @@ public class CursoController {
         return ResponseEntity.ok(datosDelCurso);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/id/{id}")
     @Transactional
     @Operation(summary = "Elimina un curso")
     public ResponseEntity<?> eliminarCurso(@PathVariable Long id){

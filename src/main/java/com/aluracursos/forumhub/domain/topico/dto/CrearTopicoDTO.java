@@ -8,8 +8,8 @@ public record CrearTopicoDTO(
         @NotBlank String titulo,
         @NotBlank String mensaje,
         @NotNull TopicoStatus status,
-        @NotBlank Long usuarioId,
-        @NotBlank Long cursoId
+        @NotNull Long usuarioId,
+        @NotNull Long cursoId
 ) {
 }
 

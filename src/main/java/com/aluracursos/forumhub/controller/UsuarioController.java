@@ -58,7 +58,7 @@ public class UsuarioController {
 
     @GetMapping("/all")
     @Operation(summary = "Enumera todos los usuarios")
-    public ResponseEntity<Page<DetalleUsuarioDTO>> leerTodosLosUsuarios(@PageableDefault(size = 5 /*, sort = "/{ultimaActualizacion}"*/)
+    public ResponseEntity<Page<DetalleUsuarioDTO>> leerTodosLosUsuarios(@PageableDefault(size = 20 /*, sort = "/{ultimaActualizacion}"*/)
                                                                             Pageable pageable){
         var pagina = usuarioRepository.findAll(pageable).map(DetalleUsuarioDTO::new);
         return ResponseEntity.ok(pagina);
@@ -66,13 +66,13 @@ public class UsuarioController {
 
     @GetMapping
     @Operation(summary = "Lista solo los usuario habilitados")
-    public ResponseEntity<Page<DetalleUsuarioDTO>> leerUsuariosActivos(@PageableDefault(size = 5) Pageable pageable){
+    public ResponseEntity<Page<DetalleUsuarioDTO>> leerUsuariosActivos(@PageableDefault(size = 20) Pageable pageable){
 //        var pagina = usuarioRepository.findAllByActivoTrue(pageable).map(DetalleUsuarioDTO::new);
         var pagina = usuarioRepository.listarActivos(pageable).map(DetalleUsuarioDTO::new);
         return ResponseEntity.ok(pagina);
     }
 
-    @GetMapping("/usuarios/{nombreUsuario}")
+    @GetMapping("/by-username/{nombreUsuario}")
     @Operation(summary = "Lee un único usuario por su nombre de usuario")
     public ResponseEntity<DetalleUsuarioDTO> leerUnUsuario(@PathVariable String nombreUsuario){
 
@@ -90,7 +90,7 @@ public class UsuarioController {
         return ResponseEntity.ok(datosUsuario);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     @Operation(summary = "Lee un único usuario por su Id")
     public ResponseEntity<DetalleUsuarioDTO> leerUnUsuarioPorId(@PathVariable Long id){
         Usuario usuario = usuarioRepository.getReferenceById(id);
@@ -110,7 +110,7 @@ public class UsuarioController {
     @Transactional
     @Operation(summary = "Actualiza la contraseña de un usuario, perfil, nombre , apellido, email o estado")
     public ResponseEntity<DetalleUsuarioDTO> actualizarUsuario(@RequestBody @Valid ActualizarUsuarioDTO actualizarUsuarioDTO,
-                                                               String nombreUsuario){
+                                                               @PathVariable String nombreUsuario){
         actualizarValidadores.forEach(v -> v.validar(actualizarUsuarioDTO));
 
         Usuario usuario = (Usuario) usuarioRepository.findByNombreUsuario(nombreUsuario);
@@ -134,11 +134,11 @@ public class UsuarioController {
         return ResponseEntity.ok(datosUsuario);
     }
 
-    @DeleteMapping("/{nombre_usuario}")
+    @DeleteMapping("id/{id}")
     @Transactional
     @Operation(summary = "Deshabilita a un usuario")
-    public ResponseEntity<?> eliminarUsuario(@PathVariable String nombreUsuario){
-        Usuario usuario = (Usuario) usuarioRepository.findByNombreUsuario(nombreUsuario);
+    public ResponseEntity<?> eliminarUsuario(@PathVariable Long id){
+        Usuario usuario = (Usuario) usuarioRepository.getReferenceById(id);
         usuario.eliminarUsuario();
         return ResponseEntity.noContent().build();
     }

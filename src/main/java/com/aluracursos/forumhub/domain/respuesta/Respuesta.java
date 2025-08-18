@@ -26,10 +26,12 @@ public class Respuesta {
 
     @Column(name = "fecha_creacion")
     private LocalDateTime fechaCreacion;
-    @Column(name = "ultima_actualizacion")
+    @Column(name = "fecha_actualizacion")
     private LocalDateTime ultimaActualizacion;
 
+//    @Column(name = "esLaSolucion")
     private Boolean esLaSolucion;
+//    @Column(name = "fueBorrado")
     private Boolean fueBorrado;
 
     @ManyToOne(fetch = FetchType.LAZY)
