@@ -10,6 +10,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -28,6 +29,7 @@ public class Usuario implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "nombre_usuario")
     private String nombreUsuario;
     private String contrasena;
 
@@ -40,7 +42,7 @@ public class Usuario implements UserDetails {
     private Boolean activo;
 
     public Usuario(@NotBlank CrearUsuarioDTO usuario, String contrasenaEnCriptada) {
-        this.nombreUsuario = usuario.nombreUsuario();
+        this.nombreUsuario = usuario.nombre_usuario();
         this.contrasena = contrasenaEnCriptada;
         this.perfil = Perfil.ESTUDIANTE;
         this.nombre = usuario.nombre();
@@ -96,7 +98,8 @@ public class Usuario implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+//        return List.of();
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override
@@ -106,7 +109,7 @@ public class Usuario implements UserDetails {
 
     @Override
     public String getUsername() {
-        return nombre;
+        return nombreUsuario;
     }
 
     @Override

@@ -5,7 +5,7 @@ import com.aluracursos.forumhub.domain.usuario.Usuario;
 
 public record DetalleUsuarioDTO(
         Long id,
-        String nombreUsario,
+        String nombre_usario,
         Perfil perfil,
         String nombre,
         String apellido,

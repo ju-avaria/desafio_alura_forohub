@@ -75,7 +75,7 @@ public class RespuestaController {
         return ResponseEntity.ok(pagina);
     }
 
-    @GetMapping("/usuario/{nombreUsuario}")
+    @GetMapping("/usuario/{nombre_usuario}")
     @Operation(summary = "Lee todas las respuestas del nombre de usuario proporcionado")
     public ResponseEntity<Page<DetalleRespuestaDTO>> leerRespuestasDelUsuario(@PageableDefault(size = 5, sort = "{ultimaactualizacion}",
             direction = Sort.Direction.ASC) Pageable pageable, @PathVariable Long usuarioId){

@@ -14,7 +14,7 @@ public class UsuarioDuplicado implements ValidarCrearUsuario{
 
     @Override
     public void validar(CrearUsuarioDTO datos) {
-        var usuarioDuplicado = usuarioRepository.findByNombreUsuario(datos.nombreUsuario());
+        var usuarioDuplicado = usuarioRepository.findByNombreUsuario(datos.nombre_usuario());
         if(usuarioDuplicado != null){
             throw new ValidationException("Este ususario ya existe");
         }
